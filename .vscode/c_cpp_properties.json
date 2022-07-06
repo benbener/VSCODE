@@ -1,0 +1,41 @@
+{
+    "env": {
+        "mingw64_dir": "D:\\DEVELOP\\msys64\\mingw64"
+    },
+    "configurations": [
+        {
+            "name": "msvc",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${env:INCLUDE}"                    // 1.运行"Developer Command Prompt for VS 2019" 2.命令行启动vscode
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "D:/Program Files/Microsoft Visual Studio/2019/Professional/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"  // msvc编译器
+        },
+        {
+            "name": "win32",                        // default
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${mingw64_dir}\\include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "${mingw64_dir}\\bin\\gcc.exe",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "windows-gcc-x64"   // mingw64 gcc编译器(不支持std::thread)
+        }
+    ],
+    "version": 4
+}

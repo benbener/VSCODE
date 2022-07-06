@@ -1,0 +1,48 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: cl.exe 生成活动文件",		// msvc cl编译器
+			"command": "D:\\Program Files\\Microsoft Visual Studio\\2019\\Professional\\VC\\Tools\\MSVC\\14.29.30133\bin\\Hostx64\\x64\\cl.exe",
+			"args": [
+				"/Zi",
+				"/EHsc",
+				"/nologo",
+				"/Fe${fileDirname}\\${fileBasenameNoExtension}.exe",
+				"${file}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build",
+			"detail": "编译器: cl.exe"
+		},
+		{
+			"type": "cppbuild",
+			"label": "C/C++: mingw64 gcc/g++生成活动文件",				// mingw64 gcc/g++编译器
+			"command": "D:\\DEVELOP\\msys64\\mingw64\\bin\\g++.exe",	// gcc.exe或g++.exe
+			"args": [
+				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+				"-fexec-charset=GBK"									//解决中文乱码
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group":{
+				"kind": "build",
+				"isDefault": true		// default
+			},
+			"detail": "编译器: gcc/g++.exe"
+		}
+	]
+}
