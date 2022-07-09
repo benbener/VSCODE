@@ -1,6 +1,6 @@
 /**
  * @file base64.cpp
- * @author your name (you@domain.com)
+ * @author zhang_shaoqing (734406501@qq.com)
  * @brief 
  * @version 0.1
  * @date 2022-07-06
@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
+
 
 #include <stdio.h>
 #include <string.h>
@@ -42,10 +43,10 @@ uint32 encode(const uint8* data,uint32 len,uint8* base64)
     uint32 base64_len = 0;
     for (uint32 i = 0; i+3 <= len; i+=3)
     {
-        base64[base64_len++] = alphabet_map[data[i] >> 2];                             //取出第一个字符的前6位并找出对应的结果字符
-        base64[base64_len++] = alphabet_map[((data[i] << 4) & 0x30) | (data[i+1] >> 4)];     //将第一个字符的后2位与第二个字符的前4位进行组合并找到对应的结果字符
-        base64[base64_len++] = alphabet_map[((data[i+1] << 2) & 0x3c) | (data[i+2] >> 6)];   //将第二个字符的后4位与第三个字符的前2位组合并找出对应的结果字符
-        base64[base64_len++] = alphabet_map[data[i+2] & 0x3f]; 
+        base64[base64_len++] = alphabet_map[data[i] >> 2];                                  //取出第一个字符的前6位并找出对应的结果字符
+        base64[base64_len++] = alphabet_map[((data[i] << 4) & 0x30) | (data[i+1] >> 4)];    //将第一个字符的后2位与第二个字符的前4位进行组合并找到对应的结果字符
+        base64[base64_len++] = alphabet_map[((data[i+1] << 2) & 0x3c) | (data[i+2] >> 6)];  //将第二个字符的后4位与第三个字符的前2位组合并找出对应的结果字符
+        base64[base64_len++] = alphabet_map[data[i+2] & 0x3f];                              //取出第三个字符的后6位并找出结果字符
     }
     
     int tail = len % 3;
@@ -67,6 +68,14 @@ uint32 encode(const uint8* data,uint32 len,uint8* base64)
     return base64_len;
 }
 
+/**
+ * @brief 
+ * 
+ * @param base64 
+ * @param base64_len 
+ * @param plain 
+ * @return uint32 
+ */
 uint32 decode(const uint8* base64,uint32 base64_len,uint8 *plain)
 {
     assert((base64_len & 0x03) == 0);
@@ -82,7 +91,7 @@ uint32 decode(const uint8* base64,uint32 base64_len,uint8 *plain)
 
         assert(quad[0] < 64 && quad[1] < 64);
 
-        plain[plain_len++] = (quad[0] << 2) | (quad[1] >> 4);
+        plain[plain_len++] = (quad[0] << 2) | (quad[1] >> 4);       //取出第一个字符对应base64表的十进制数的前6位与第二个字符对应base64表的十进制数的前2位进行组合
 
         if (quad[2] >= 64)
         {
@@ -90,13 +99,13 @@ uint32 decode(const uint8* base64,uint32 base64_len,uint8 *plain)
         }
         else if (quad[3] >= 64)
         {
-            plain[plain_len++] = (quad[1] << 4) | (quad[2] >> 2);
+            plain[plain_len++] = (quad[1] << 4) | (quad[2] >> 2);   //取出第二个字符对应base64表的十进制数的后4位与第三个字符对应base64表的十进制数的前4位进行组合
             break;
         }
         else
         {
             plain[plain_len++] = (quad[1] << 4) | (quad[2] >> 2);
-            plain[plain_len++] = (quad[2] << 6) | quad[3];
+            plain[plain_len++] = (quad[2] << 6) | quad[3];          //取出第三个字符对应base64表的十进制数的后2位与第4个字符进行组合
         }
     }
     
@@ -105,7 +114,6 @@ uint32 decode(const uint8* base64,uint32 base64_len,uint8 *plain)
 
 int main()
 {
-    /// encode test
     char input[256];
     do
     {
@@ -118,14 +126,12 @@ int main()
         uint8 base64_buffer[1024],decode_base64_buffer[4096];
         uint32 size = encode(data,len,base64_buffer);
         base64_buffer[size] = 0;
-        printf("toBase64: %s len = %d\n",base64_buffer,size);
+        printf("toBase64: [%s] len=%d\n",base64_buffer,size);
 
         size = decode(base64_buffer,size,decode_base64_buffer);
         decode_base64_buffer[size] = 0;
         printf("decode base64: %s\n",decode_base64_buffer);
     } while (strcmp(input,"q") != 0); 
-
-    /// decode test
 
     return 0;
 }
